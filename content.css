@@ -1,0 +1,30 @@
+/* Direction chosen per block by content.js */
+[data-bidi-fix="rtl"] {
+  direction: rtl !important;
+  unicode-bidi: isolate !important;
+}
+[data-bidi-fix="ltr"] {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+}
+/* Only re-align blocks that had the "natural" alignment of their old direction */
+[data-bidi-fix][data-bidi-align] {
+  text-align: start !important;
+}
+/* Lists: move the indent (and bullets) to the other side */
+ul[data-bidi-fix], ol[data-bidi-fix] {
+  padding-left: var(--bidi-pr, 0) !important;
+  padding-right: var(--bidi-pl, 0) !important;
+}
+
+/* Editable areas (chat boxes, textareas): each line picks its own direction
+   from its first strong character, no DOM changes needed. */
+html[data-bidi-active] textarea,
+html[data-bidi-active] input:not([type]),
+html[data-bidi-active] input[type="text"],
+html[data-bidi-active] input[type="search"],
+html[data-bidi-active] [contenteditable]:not([contenteditable="false"]),
+html[data-bidi-active] [contenteditable]:not([contenteditable="false"]) :is(p, div, li, h1, h2, h3, h4, h5, h6, blockquote) {
+  unicode-bidi: plaintext !important;
+  text-align: start !important;
+}
