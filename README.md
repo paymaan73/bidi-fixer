@@ -34,10 +34,24 @@ Browsers have `dir="auto"`, but it only looks at the **first** strong character.
 
 Bidi Fixer looks at the **whole** text of every paragraph, counts Persian/Arabic/Hebrew words against English words, and sets the direction from that. A Persian sentence full of English technical terms still comes out RTL.
 
-```
-Before:  .ChatGPT یک مدل زبانی است که توسط OpenAI ساخته شده      ← aligned left, period jumps
-After:        ChatGPT یک مدل زبانی است که توسط OpenAI ساخته شده.  ← right-aligned, correct order
-```
+<table>
+<tr><th></th><th>Without Bidi Fixer</th><th>With Bidi Fixer</th></tr>
+<tr>
+<td>Sentence starting with English</td>
+<td><p dir="ltr" align="left">ChatGPT یک مدل زبانی است که توسط OpenAI ساخته شده.</p></td>
+<td><p dir="rtl" align="right">ChatGPT یک مدل زبانی است که توسط OpenAI ساخته شده.</p></td>
+</tr>
+<tr>
+<td>Heading with English terms</td>
+<td><p dir="ltr" align="left">تعریف Accessors در Companion Object</p></td>
+<td><p dir="rtl" align="right">تعریف Accessors در Companion Object</p></td>
+</tr>
+<tr>
+<td>Parentheses and versions</td>
+<td><p dir="ltr" align="left">از React Native (نسخه 0.74) استفاده کنید.</p></td>
+<td><p dir="rtl" align="right">از React Native (نسخه 0.74) استفاده کنید.</p></td>
+</tr>
+</table>
 
 ## Features
 
