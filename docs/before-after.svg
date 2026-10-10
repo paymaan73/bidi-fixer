@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="230" viewBox="0 0 1000 230">
+  <foreignObject x="0" y="0" width="1000" height="230">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="card">
+      <style>
+        .card { box-sizing: border-box; width: 1000px; height: 230px; padding: 18px 20px;
+          font: 15px/1.5 Tahoma, "Segoe UI", "Noto Sans Arabic", system-ui, sans-serif;
+          background: #ffffff; color: #1f2328; border: 1px solid #d0d7de; border-radius: 12px; }
+        .grid { display: grid; grid-template-columns: 200px 1fr 1fr; gap: 10px 14px; align-items: stretch; }
+        .h { font-weight: 700; font-size: 14px; padding-bottom: 4px; }
+        .bad-h { color: #cf222e; } .good-h { color: #1a7f37; }
+        .label { font-size: 13px; color: #59636e; display: flex; align-items: center; direction: ltr; }
+        .cell { margin: 0; padding: 10px 12px; border-radius: 8px; }
+        .bad { direction: ltr; text-align: left; background: #ffebe9; border: 1px solid #ffcecb; }
+        .good { direction: rtl; text-align: right; background: #dafbe1; border: 1px solid #aceebb; }
+        @media (prefers-color-scheme: dark) {
+          .card { background: #0d1117; color: #e6edf3; border-color: #30363d; }
+          .label { color: #9198a1; }
+          .bad { background: #2d1416; border-color: #5c2226; }
+          .good { background: #12261b; border-color: #1f4d2c; }
+          .bad-h { color: #ff7b72; } .good-h { color: #3fb950; }
+        }
+      </style>
+      <div class="grid">
+        <div></div>
+        <div class="h bad-h">✗ Without Bidi Fixer</div>
+        <div class="h good-h">✓ With Bidi Fixer</div>
+
+        <div class="label">Sentence starting with English</div>
+        <p class="cell bad">ChatGPT یک مدل زبانی ساخت OpenAI است.</p>
+        <p class="cell good">ChatGPT یک مدل زبانی ساخت OpenAI است.</p>
+
+        <div class="label">Heading with English terms</div>
+        <p class="cell bad">تعریف Accessors در Companion Object:</p>
+        <p class="cell good">تعریف Accessors در Companion Object:</p>
+
+        <div class="label">Parentheses and versions</div>
+        <p class="cell bad">از React Native (نسخه 0.74) استفاده کنید.</p>
+        <p class="cell good">از React Native (نسخه 0.74) استفاده کنید.</p>
+      </div>
+    </div>
+  </foreignObject>
+</svg>
