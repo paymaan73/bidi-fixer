@@ -5,15 +5,20 @@
   const LTR_CHARS = 'A-Za-z\\u00C0-\\u024F\\u0370-\\u03FF\\u0400-\\u04FF';
   const RTL_TEST = new RegExp(`[${RTL_CHARS}]`);
   const LTR_TEST = new RegExp(`[${LTR_CHARS}]`);
-  const RTL_ALL = new RegExp(`[${RTL_CHARS}]`, 'g');
-  const LTR_ALL = new RegExp(`[${LTR_CHARS}]`, 'g');
+  // Words, not letters: English words are long and Persian skips short vowels,
+  // so letter counts make Farsi lines with a few English terms look "English".
+  const RTL_WORDS = new RegExp(`[${RTL_CHARS}][${RTL_CHARS}\\u200C\\u200D]*`, 'g');
+  const LTR_WORDS = new RegExp(`[${LTR_CHARS}][${LTR_CHARS}'’]*`, 'g');
+  const FIRST_STRONG = new RegExp(`[${RTL_CHARS}${LTR_CHARS}]`);
   const LATIN_RUN = new RegExp(`[${LTR_CHARS}][^${RTL_CHARS}\\n]*`, 'g');
   const RTL_RUN = new RegExp(`[${RTL_CHARS}][^${LTR_CHARS}\\n]*`, 'g');
   const LATIN_END = new RegExp(`[${LTR_CHARS}0-9]`);
   const RTL_END = new RegExp(`[${RTL_CHARS}0-9]`);
 
-  // Share of RTL letters needed for a block to become RTL.
-  const THRESHOLD = 0.4;
+  // Share of RTL words needed for a block to become RTL. Lower when the block
+  // starts with an RTL word ("تعریف Accessors در Companion Object").
+  const THRESHOLD = 0.25;
+  const THRESHOLD_RTL_START = 0.15;
 
   const ATTR = 'data-bidi-fix';
   const ORIG_ATTR = 'data-bidi-orig';
@@ -72,14 +77,21 @@
     return out;
   }
 
-  function wantedDir(el, ownOnly) {
-    let rtl = 0, ltr = 0;
-    for (const n of textNodes(el, ownOnly)) {
-      rtl += count(n.nodeValue, RTL_ALL);
-      ltr += count(n.nodeValue, LTR_ALL);
-    }
+  function decide(rtl, ltr, first) {
     if (!rtl && !ltr) return null;
-    return rtl / (rtl + ltr) >= THRESHOLD ? 'rtl' : 'ltr';
+    const limit = first && RTL_TEST.test(first) ? THRESHOLD_RTL_START : THRESHOLD;
+    return rtl / (rtl + ltr) >= limit ? 'rtl' : 'ltr';
+  }
+
+  function wantedDir(el, ownOnly) {
+    let rtl = 0, ltr = 0, first = null;
+    for (const n of textNodes(el, ownOnly)) {
+      const text = n.nodeValue;
+      rtl += count(text, RTL_WORDS);
+      ltr += count(text, LTR_WORDS);
+      if (!first) first = (text.match(FIRST_STRONG) || [])[0];
+    }
+    return decide(rtl, ltr, first);
   }
 
   function unmark(el) {

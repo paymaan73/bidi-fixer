@@ -32,7 +32,7 @@ Browsers have `dir="auto"`, but it only looks at the **first** strong character.
 
 ## The fix
 
-Bidi Fixer looks at the **whole** text of every paragraph, counts Persian/Arabic/Hebrew letters against Latin letters, and sets the direction from the majority.
+Bidi Fixer looks at the **whole** text of every paragraph, counts Persian/Arabic/Hebrew words against English words, and sets the direction from that. A Persian sentence full of English technical terms still comes out RTL.
 
 ```
 Before:  .ChatGPT یک مدل زبانی است که توسط OpenAI ساخته شده      ← aligned left, period jumps
@@ -90,7 +90,7 @@ Settings are saved with `chrome.storage.sync`, so they follow your browser profi
 
 1. **Scan.** The content script walks text nodes that contain RTL characters. On RTL pages it also walks Latin text.
 2. **Find the owning block.** For each text node it finds the nearest text block (`p`, `li`, `h1`–`h6`, `td`, `blockquote`, …). Generic containers (`div`, `section`, …) count only when they hold text directly and have **no block children** and are **not flex/grid**. This rule is what keeps page layouts intact.
-3. **Count and decide.** It counts RTL letters (Hebrew, Arabic, Persian, Syriac, Thaana, NKo, presentation forms) and LTR letters (Latin, Greek, Cyrillic) in the block, skipping code and nested blocks. If **≥ 40%** are RTL, the block becomes RTL. Otherwise it becomes LTR.
+3. **Count words and decide.** It counts RTL words (Hebrew, Arabic, Persian, Syriac, Thaana, NKo, presentation forms) and LTR words (Latin, Greek, Cyrillic) in the block, skipping code and nested blocks. It counts **words, not letters**, because English terms are long and Persian leaves out short vowels, so a letter count would make `تعریف Accessors در Companion Object` look English. If **≥ 25%** of the words are RTL, or **≥ 15%** when the block starts with an RTL word, the block becomes RTL. Otherwise it becomes LTR.
 4. **Apply.** If the result differs from the block's current direction, the block gets a `data-bidi-fix="rtl|ltr"` attribute, and `content.css` turns that into `direction` + `unicode-bidi: isolate`. Text alignment is flipped only when the block had its direction's *natural* alignment, so centered headings stay centered.
 5. **Lists and tables first.** `ul`, `ol` and `table` are judged on all of their text, top-down, before their children. The list's padding is swapped so bullets get room on the correct side.
 6. **Editables use pure CSS.** Inputs, textareas and `contenteditable` editors get `unicode-bidi: plaintext`, so each line picks its own direction without any DOM changes. This is safe for editors like ProseMirror.
@@ -118,7 +118,8 @@ These constants at the top of `content.js` can be adjusted:
 
 | Constant | Default | Meaning |
 | --- | --- | --- |
-| `THRESHOLD` | `0.4` | Share of RTL letters needed for a block to become RTL |
+| `THRESHOLD` | `0.25` | Share of RTL words needed for a block to become RTL |
+| `THRESHOLD_RTL_START` | `0.15` | Same, when the block's first word is RTL |
 | `TEXT_BLOCKS` | `P, LI, H1…` | Tags that are always judged on their own |
 | `SKIP_TAGS` | `CODE, PRE, …` | Tags whose text is ignored and never changed |
 
@@ -149,7 +150,7 @@ Turn the extension off for that site from the popup, then [open an issue](../../
 <details>
 <summary><b>A paragraph got the wrong direction</b></summary>
 
-It probably has close to 40% RTL letters. Try a different `THRESHOLD`, or open an issue with the exact text so the heuristic can be improved.
+Its share of RTL words is probably close to the threshold. Try adjusting `THRESHOLD` / `THRESHOLD_RTL_START`, or open an issue with the exact text so the heuristic can be improved.
 </details>
 
 ## Privacy
