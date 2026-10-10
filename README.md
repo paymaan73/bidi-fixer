@@ -58,7 +58,7 @@ After:        ChatGPT یک مدل زبانی است که توسط OpenAI ساخ�
 
 1. Download the code:
    ```bash
-   git clone https://github.com/USERNAME/bidi-fixer.git
+   git clone https://github.com/paymaan73/bidi-fixer.git
    ```
    or download the ZIP from GitHub and extract it.
 2. Open `chrome://extensions` (Edge: `edge://extensions`, Brave: `brave://extensions`).
