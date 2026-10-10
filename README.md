@@ -13,7 +13,7 @@ A lightweight Chrome/Chromium extension that gives each paragraph the right dire
 ![No tracking](https://img.shields.io/badge/tracking-none-success)
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
 
-[فارسی](#فارسی) · [Install](#installation) · [How it works](#how-it-works) · [Contributing](#contributing)
+[Install](#installation) · [How it works](#how-it-works) · [Contributing](#contributing)
 
 </div>
 
@@ -80,9 +80,9 @@ Click the toolbar icon to open the popup:
 
 | Option | What it does |
 | --- | --- |
-| **فعال** (Enabled) | Global on/off switch |
-| **فعال در این سایت** (Enabled on this site) | Turns the extension off for the current hostname only |
-| **جداسازی عبارت‌های انگلیسی** (Isolate phrases) | *Experimental.* Wraps multi-word phrases of the other script in `<bdi>`. This is more accurate, but it changes the page's DOM. Off by default (see [Known limitations](#known-limitations)) |
+| **Enabled** | Global on/off switch |
+| **Enabled on this site** | Turns the extension off for the current hostname only |
+| **Isolate mixed phrases** | *Experimental.* Wraps multi-word phrases of the other script in `<bdi>`. This is more accurate, but it changes the page's DOM. Off by default (see [Known limitations](#known-limitations)) |
 
 Settings are saved with `chrome.storage.sync`, so they follow your browser profile. Changes take effect right away without a page reload.
 
@@ -105,7 +105,7 @@ bidi-fixer/
 ├── manifest.json   # MV3 manifest
 ├── content.js      # detection + direction logic, MutationObserver
 ├── content.css     # styles driven by data-bidi-* attributes
-├── popup.html      # settings popup (Persian UI)
+├── popup.html      # settings popup
 ├── popup.js        # popup logic (chrome.storage.sync)
 └── icons/          # 16 / 32 / 48 / 128 px PNGs
 ```
@@ -179,47 +179,3 @@ When reporting a bug, please include the **URL**, your **browser and version**, 
 
 [MIT](LICENSE): free to use, modify and share.
 
----
-
-<div dir="rtl">
-
-## فارسی
-
-### مشکل چیه؟
-
-وقتی از ChatGPT یا هر هوش مصنوعی دیگه‌ای می‌خوای متنی رو به فارسی ترجمه کنه، یا یه مقاله‌ی فارسی پر از اصطلاح انگلیسیه، صفحه متن رو چپ‌به‌راست نشون می‌ده. نتیجه این می‌شه که کلمه‌های فارسی و انگلیسی قاطی می‌شن، نقطه و پرانتز سر جاشون نیستن و متن اصلاً خوانا نیست.
-
-### Bidi Fixer چی کار می‌کنه؟
-
-این افزونه برای هر پاراگراف حرف‌های فارسی و انگلیسی رو می‌شمره و جهت رو بر اساس اکثریت تعیین می‌کنه، نه فقط بر اساس اولین حرف. برای همین جمله‌ای مثل «ChatGPT یک مدل زبانی است» هم درست راست‌چین می‌شه.
-
-- راست‌چین یا چپ‌چین خودکار هر پاراگراف
-- لیست‌ها و جدول‌ها کامل برعکس می‌شن (بولت‌ها سمت راست)
-- کدها همیشه چپ‌چین می‌مونن
-- باکس‌های تایپ (مثل باکس چت ChatGPT) هر خط رو خودکار تنظیم می‌کنن
-- با متنی که لحظه‌به‌لحظه تایپ می‌شه (استریم) هم کار می‌کنه
-- تو سایت‌های فارسی، پاراگراف‌های انگلیسی رو چپ‌چین می‌کنه
-- هیچ داده‌ای ارسال نمی‌کنه و هیچ درخواست شبکه‌ای نداره
-
-### نصب
-
-۱. کد رو دانلود کن (`git clone` یا فایل ZIP از گیت‌هاب).
-۲. برو به `chrome://extensions`.
-۳. **Developer mode** رو (بالا سمت راست) روشن کن.
-۴. روی **Load unpacked** بزن و پوشه‌ی `bidi-fixer` رو انتخاب کن.
-
-روی همه‌ی مرورگرهای مبتنی بر کرومیوم کار می‌کنه: Chrome، Edge، Brave، Opera و Vivaldi.
-
-### تنظیمات
-
-با کلیک روی آیکون افزونه:
-
-- **فعال**: روشن یا خاموش کردن کلی
-- **فعال در این سایت**: خاموش کردن فقط برای سایت فعلی
-- **جداسازی عبارت‌های انگلیسی** (آزمایشی): عبارت‌هایی مثل `React Native (v0.74)` رو وسط جمله‌ی فارسی یک‌جا نگه می‌داره. ممکنه روی سایت‌هایی مثل ChatGPT گاهی مشکل درست کنه، برای همین پیش‌فرض خاموشه.
-
-### مشارکت
-
-اگه جایی دیدی جهت متن درست نشده، یه Issue باز کن و آدرس صفحه، اسکرین‌شات و متن مشکل‌دار رو بذار. Pull Request هم با کمال میل پذیرفته می‌شه 🙏
-
-</div>
